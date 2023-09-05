@@ -6,15 +6,15 @@ import MovieCard from './MovieCard';
 //import React, { useState } from 'react';
 //bd7ff9b
 
-const API_URL='http://www.omdbapi.com?apikey=bd7ff9b';
+const API_URL='https://www.omdbapi.com?apikey=bd7ff9b';
 
-const movie1= {
-        "Title": "Spiderman",
-        "Year": "2010",
-        "imdbID": "tt1785572",
-        "Type": "movie",
-        "Poster": "N/A"
-}
+// const movie1= {
+//         "Title": "Spiderman",
+//         "Year": "2010",
+//         "imdbID": "tt1785572",
+//         "Type": "movie",
+//         "Poster": "N/A"
+// }
 
 
 const App = () => {
