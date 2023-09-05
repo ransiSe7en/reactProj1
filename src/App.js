@@ -1,75 +1,68 @@
-import {useState,useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import SearchIcon from './search.svg';
 import MovieCard from './MovieCard';
-//import { useState } from 'react';
-//import React, { useState } from 'react';
-//bd7ff9b
 
-const API_URL='https://www.omdbapi.com?apikey=bd7ff9b';
-
-// const movie1= {
-//         "Title": "Spiderman",
-//         "Year": "2010",
-//         "imdbID": "tt1785572",
-//         "Type": "movie",
-//         "Poster": "N/A"
-// }
+const API_KEY = '3c4b6501616397d5a042a9ac65c66229';
+const API_URL = 'https://api.themoviedb.org/3/search/movie';
+const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 
 
 const App = () => {
+  const [movies, setMovies] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
 
-    const [movies, setMovies] = useState([]);
+  const searchMovies = async (query) => {
+    try {
+      const response = await fetch(`${API_URL}?api_key=${API_KEY}&query=${query}`);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
 
-    const [searchTerm, setSearchTerm] = useState('');
+      const data = await response.json();
+      setMovies(data.results);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
 
-    const searchMovies = async (title)=> {
-    const response = await fetch(`${API_URL}&s=${title}`);
+  useEffect(() => {
+    searchMovies('Spiderman');
+  }, []);
 
-    const data = await response.json();
-
-    setMovies(data.Search);
-   }
-   useEffect(() => {
-     searchMovies('Spiderman');
-   }, [])
-
-   return (
+  return (
     <div className="app">
-        <h1>Movieland</h1>
+      <h1>Movieland</h1>
 
-        <div className="search">
-            <input 
-                placeholder="Search for Movies"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-            />
-            <img
-                src={SearchIcon}
-                alt="search"
-                onClick={() => searchMovies(searchTerm)}
-            />
-        </div>
+      <div className="search">
+        <input
+          placeholder="Search for Movies"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+         <img
+            src={SearchIcon}
+            alt="search"
+            onClick={() => searchMovies(searchTerm)}
+        />
+      </div>
 
-        {
-            movies?.length > 0 
-                ?(
-                <div className="container">
-                    {movies.map((movie) => (
-                        <MovieCard movie={movie}/>
-                    ))}
-                </div>
-                ) : (
-                <div className="empty">
-                    <h2>No movies Found</h2>
-                </div>
-                )
-        }
-
-        
+      {
+        movies?.length > 0 ? (
+          <div className="container">
+            {movies.map((movie) => (
+              <MovieCard key={movie.id} movie={movie} /> 
+            ))}
+          </div>
+        ) : (
+          <div className="empty">
+            <h2>No movies Found</h2>
+          </div>
+        )
+      }
     </div>
+  );
+};
 
-   );
-}
-
+export { IMAGE_BASE_URL };
 export default App;
